@@ -36,6 +36,27 @@ public class DynamicArray {
     } // method getOccupancy
 
     /**
+     * Returns element at specified index in underlying array,
+     * if index is within the current occupancy range
+     * 
+     * 
+     * @param index the position of the element to retrieve
+     * @return the string at the specifiec index, or null if index is out of bounds
+     */
+
+    public String getElement(int index) {
+
+        // Guard statement to check index is within occupancy
+        if (index >= 0 && index < occupancy) {
+            return this.underlying[index];
+            
+        }
+
+        // Return null if index is invalid
+        return null;
+    }
+
+    /**
      * Resize the underlying array as needed.
      * 
      * @param resize_by int factor multiply the size of the underlying array
@@ -66,6 +87,38 @@ public class DynamicArray {
         this.underlying[this.occupancy] = string;
         this.occupancy++;
     } // method add
+
+    /**
+     * Overloaded add method that inserts a value at a specific index
+     * Used by Stack to implemenent push-to-front behavior
+     * 
+     * @param index the position where the new string will be inserted
+     * @param value the string to insert
+     */
+
+    public void add(int index, String value) {
+        // Resize the array if full
+        if (this.occupancy == this.underlying.length) {
+            this.resize();
+        }
+
+
+        // Check that index is within bounds
+        if (index < 0 || index > this.occupancy) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+            
+        }
+
+        // Shift elements to the right to make room
+        for (int i = this.occupancy; i > index; i--) {
+            this.underlying[i] = this.underlying[i -1];
+        }
+
+
+        // Place new element at the target index
+        this.underlying[index] = value;
+        this.occupancy++;
+    }
 
     /**
      * method to find the position of an element in the underlying array
